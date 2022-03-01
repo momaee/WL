@@ -2,6 +2,7 @@ package interpreter_test
 
 import (
 	"bytes"
+	"fmt"
 	"math"
 	"strings"
 	"testing"
@@ -36,7 +37,8 @@ func TestBrainFuckMachine_PrintHelloWorld(t *testing.T) {
 
 	bfm := interpreter.NewInterpreter(i, o, code)
 
-	_ = bfm.Run()
+	err := bfm.Run()
+	assert.NoError(t, err)
 
 	if o.String() != "Hello World!\n" {
 		t.Errorf("wrong output, got %s", o.String())
@@ -53,7 +55,8 @@ func TestGetValueInMemory(t *testing.T) {
 
 	bfm := interpreter.NewInterpreter(i, o, code)
 
-	_ = bfm.Run()
+	err := bfm.Run()
+	assert.NoError(t, err)
 
 	if bfm.GetValueInMemory(0) != 1 {
 		t.Errorf("wrong value, got %d", bfm.GetValueInMemory(0))
@@ -74,7 +77,8 @@ func TestAddOperatorError(t *testing.T) {
 	})
 	assert.Error(t, err)
 
-	_ = bfm.Run()
+	err = bfm.Run()
+	assert.NoError(t, err)
 
 	if bfm.GetValueInMemory(0) != 1 {
 		t.Errorf("wrong value, got %d", bfm.GetValueInMemory(0))
@@ -95,7 +99,8 @@ func TestAddOperatorNoError(t *testing.T) {
 	})
 	assert.NoError(t, err)
 
-	_ = bfm.Run()
+	err = bfm.Run()
+	assert.NoError(t, err)
 
 	if bfm.GetValueInMemory(0) != 24 {
 		t.Errorf("wrong value, got %d", bfm.GetValueInMemory(0))
@@ -103,7 +108,6 @@ func TestAddOperatorNoError(t *testing.T) {
 }
 
 func TestRemoveOperatorError(t *testing.T) {
-
 	t.Run("1", func(t *testing.T) {
 		code := strings.NewReader("+")
 
@@ -113,10 +117,12 @@ func TestRemoveOperatorError(t *testing.T) {
 
 		bfm := interpreter.NewInterpreter(i, o, code)
 
-		err := bfm.RemoveOperator('*')
+		err := bfm.RemoveOperator('/')
+		fmt.Println("err", err)
 		assert.Error(t, err)
 
-		_ = bfm.Run()
+		err = bfm.Run()
+		assert.NoError(t, err)
 
 		if bfm.GetValueInMemory(0) != 1 {
 			t.Errorf("wrong value, got %d", bfm.GetValueInMemory(0))
@@ -126,7 +132,7 @@ func TestRemoveOperatorError(t *testing.T) {
 
 func TestRemoveOperatorNoError(t *testing.T) {
 	t.Run("1", func(t *testing.T) {
-		code := strings.NewReader("+++***") // (1+1+1) because * would be removed
+		code := strings.NewReader("+++###") // (1+1+1) because # would be removed
 
 		i := new(bytes.Buffer)
 
@@ -134,15 +140,16 @@ func TestRemoveOperatorNoError(t *testing.T) {
 
 		bfm := interpreter.NewInterpreter(i, o, code)
 
-		err := bfm.AddOperator('*', func(c int, memory *interpreter.Memory) {
+		err := bfm.AddOperator('#', func(c int, memory *interpreter.Memory) {
 			memory.Cell[memory.Cursor] = (memory.Cell[memory.Cursor] * int(math.Pow(2, float64(c)))) % 255
 		})
 		assert.NoError(t, err)
 
-		err = bfm.RemoveOperator('*')
+		err = bfm.RemoveOperator('#')
 		assert.NoError(t, err)
 
-		_ = bfm.Run()
+		err = bfm.Run()
+		assert.NoError(t, err)
 
 		if bfm.GetValueInMemory(0) != 3 {
 			t.Errorf("wrong value, got %d", bfm.GetValueInMemory(0))
@@ -161,7 +168,8 @@ func TestRemoveOperatorNoError(t *testing.T) {
 		err := bfm.RemoveOperator('+')
 		assert.NoError(t, err)
 
-		_ = bfm.Run()
+		err = bfm.Run()
+		assert.NoError(t, err)
 
 		if bfm.GetValueInMemory(0) != 0 {
 			t.Errorf("wrong value, got %d", bfm.GetValueInMemory(0))
