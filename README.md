@@ -63,4 +63,4 @@ Please read this [article](https://levelup.gitconnected.com/write-your-own-brain
 
 ## Run tests
 
-In the root of the project run ```go go test ./...```
+In the root of the project run ```go test ./...```
