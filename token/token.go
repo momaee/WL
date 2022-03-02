@@ -93,8 +93,6 @@ func AddOperator(symbol rune, operator Operator) error {
 }
 
 func RemoveOperator(symbol rune) error {
-	fmt.Println("symbol", symbol)
-	fmt.Println("all tokens:", AllTokens)
 	if _, ok := AllTokens[symbol]; !ok {
 		return fmt.Errorf("symbol %v does not exist", symbol)
 	}
