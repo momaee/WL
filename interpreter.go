@@ -60,7 +60,6 @@ func NewInterpreter(i io.Reader, w io.Writer, code io.Reader) Interpreter {
 func (b *brainFuck) Run() error {
 	inst := b.p.Parse()
 	for b.ip < len(inst) {
-
 		for _, t := range token.AllTokens {
 			if inst[b.ip].T == t {
 				c := inst[b.ip].C
@@ -160,4 +159,8 @@ func (b *brainFuck) GetValueInMemory(position int) int {
 		return 0
 	}
 	return b.memory.Cell[position]
+}
+
+func test(){
+	
 }

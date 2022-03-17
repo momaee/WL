@@ -46,7 +46,7 @@ type Memory struct {
 type Operator func(c int, memory *Memory)
 
 var (
-	AllTokens = map[rune]*Token{
+		AllTokens = map[rune]*Token{
 		'<': {Tok: LeftToken, Value: "<", Operator: seekBwd},
 		'>': {Tok: RightToken, Value: ">", Operator: seekFwd},
 		'+': {Tok: PlusToken, Value: "+", Operator: inc},

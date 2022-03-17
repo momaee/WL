@@ -1,6 +1,8 @@
 package parser
 
 import (
+	"fmt"
+
 	"github.com/momaee/WL/lexer"
 	"github.com/momaee/WL/stack"
 	"github.com/momaee/WL/token"
@@ -44,6 +46,7 @@ func NewParser(l lexer.LexScanner) RuneParser {
 func (p *parser) Parse() []*Inst {
 	for {
 		tok := p.scan()
+		fmt.Println("tok:", tok)
 		if tok.Tok == token.IllegalToken {
 			break
 		}
