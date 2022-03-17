@@ -160,7 +160,3 @@ func (b *brainFuck) GetValueInMemory(position int) int {
 	}
 	return b.memory.Cell[position]
 }
-
-func test(){
-	
-}
